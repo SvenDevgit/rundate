@@ -43,7 +43,11 @@ function getRecentPlannedRunDates(callbackFn) {
 function displayPlannedRunDates(data) {
     for (index in data.plannedRunDates) {
        $('body').append(
-        '<p>' + data.plannedRunDates[index].text + '</p>');
+       	'<p>' + data.plannedRunDates[index].route + 
+       	'<br>' + 'Date ' + data.plannedRunDates[index].date + 
+       	'<br>' + 'Distance ' +data.plannedRunDates[index].distance +  
+       	'<br>' + data.plannedRunDates[index].text + 
+       	'</p>');
     }
 }
 
