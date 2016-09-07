@@ -5,7 +5,40 @@
 	<title>RunDate</title>
 </head>
 <body> 
-  <p>Planned Routes</p>
+  <p id="planned">Planned Routes</p>
+  <div id=form>
+    <p>Add a rundate</p>	
+      <form>
+        <label for="route">Route</label>
+        <input id="route" type="text"><br>
+        <label for="date">Date</label>
+        <input id="date" type="text"><br>
+        <label for="organizer">Organizer</label>
+        <input id="organizer" type="text"><br>
+        <label for="distance">Distance</label>
+        <input id="distance" type="text"><br>
+        <label for="speed">Speed</label>
+        <input id="speed" type="text"><br>
+        <label for="text">Text</label>
+        <input id="text" type="text"><br>
+        <label for="btn1">Add Route</label>
+        <input id="btn1" type="button">
+      </form>
+      <p>Add a participant</p>
+      <form>
+        <label for="routeId">Route Id</label>
+        <input id="routeId" type="text"><br>  
+        <label for="name">Name</label>
+        <input id="name" type="text"><br>  
+        <label for="remark">Remark</label>
+        <input id="remark" type="text"><br> 
+        <label for="btn2">Add Route</label>
+        <input id="btn2" type="button">
+      </form>  
+  </div>
+  <div id=routes>
+  	<p>below here the routes should be shown</p>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="main.js"></script>
