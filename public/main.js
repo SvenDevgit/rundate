@@ -1,82 +1,58 @@
-var MOCK_RUNDATE_DATA = {
-    "plannedRunDates": [
-        {
-            "id": "1111111",
-            "date": "21-09-2016",
-            "route": "dunes and beach the hague",
-            "organizer":"John Keruac",
-            "distance": "10K", 
-            "speed": "around 11.5 km/h",
-            "text": "This is a nice route where we will run in the dunes and on the beach",
-            "participants": [
-                { 
-                    "id": "1111111",
-                    "name": "Deborah Cilissen",
-                    "remark": "looking forward to the route, i will try to keep up",
-                    "rundateId": "1111111"
-                },
-                { 
-        	        "id": "1111112",
-                    "name": "Paul KLein",
-                    "remark": "i know this route so will focus on my time",
-                    "rundateId": "1111111"
-                }
-            ]
-        },
-        {
-            "id": "1111112",
-            "date": "29-09-2016",
-            "route": "grasslands zeeland",
-            "organizer":"Maartje Bruin",
-            "distance": "15K", 
-            "speed": "around 11 km/h",
-            "text": "Flat grassland run",
-            "participants": [
-                { 
-        	         "id": "1111113",
-                     "name": "Igor Vardy",
-                     "remark": "Hallo there",
-                     "rundateId": "1111112"
-                 }
-            ]
-        },
-        {
-            "id": "1111113",
-            "date": "01-10-2016",
-            "route": "forest near zeist",
-            "organizer":"Linda Vermeer",
-            "distance": "8K", 
-            "speed": "around 9 km/h",
-            "text": "Some narrow forest paths and small hills",
-            "participants" : []
-        },
-        {
-            "id": "1111114",
-            "date": "10-10-2016",
-            "route": "moorland route",
-            "organizer":"Stan Kubic",
-            "distance": "18K", 
-            "speed": "around 12 km/h",
-            "text": "Moorland, dunes and forrest. Scenic route, more advanced tempo",
-            "participants" : []
-        }
-    ]
-};
+//var rundateId = 1111114;
+//var participantId = 1111113;
 
 
+/*
 function getRecentPlannedRunDates(callbackFn) {
     setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
+    //
+    
+    var ajax = $.ajax('/rundates', callbackFn() {
+        type: 'GET',
+        dataType: 'json'
+        });
+        ajax.done(function(result){ callbackFn(result)
+        	console.log('show the result in the ajax call ' + result);
+        });
+       
 }
+*/
+
+function getRunDates(callbackFn) {
+    //setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
+    //
+      var ajax = $.ajax('/rundates',{
+        type: 'GET',
+        dataType: 'json'
+        });
+        ajax.done(function(data){ callbackFn(data)
+        	//console.log('show the result in the ajax call ' + data.route);
+        });
+   
+   }
 
 
-
-
+   function displayRunDates(data, callbackFn) {
+      for (let runDate of data.runDates) {
+         console.log('display function rundate ' + runDate.route);
+         $('#routes').append(
+       	 '<p id=prd' + runDate.id + '>' + runDate.route + 
+       	 '<br>' + 'id' + runDate.id +
+         '<br>' + 'Date with ' + runDate.organizer + 
+       	 '<br>' + 'Date ' + runDate.date + 
+       	 '<br>' + 'Distance ' + runDate.distance +  
+       	 '<br>' + runDate.text 
+       	 //'</p>' 
+       	 ); 
+      }
+   }
+/*
 // this function stays the same when we connect
 // to real API later
-function displayPlannedRunDates(data, callbackFn) {
-    for (let index in data.plannedRunDates) {
+function displayRunDates(data, callbackFn) {
+    for (let index in data.runDates) {
        $('#routes').append(
-       	'<p id=prd' + data.plannedRunDates[index].id + '>' + data.plannedRunDates[index].route + 
+       	'<p id=prd' + data.runDates[index].id + '>' + data.plannedRunDates[index].route + 
        	'<br>' + 'id' + data.plannedRunDates[index].id +
         '<br>' + 'Date with ' + data.plannedRunDates[index].organizer + 
        	'<br>' + 'Date ' + data.plannedRunDates[index].date + 
@@ -84,6 +60,7 @@ function displayPlannedRunDates(data, callbackFn) {
        	'<br>' + data.plannedRunDates[index].text 
        	//'</p>' 
        	);       
+        
         if (data.plannedRunDates[index].participants.length > 0){
            console.log('there are partcipants');
            $('#routes').append(
@@ -104,13 +81,14 @@ function displayPlannedRunDates(data, callbackFn) {
            	 'No participants yet for this rundate'
            );  
         }
+        
     }
 }
-
+*/
 // this function can stay the same even when we
 // are connecting to real API
-function getAndDisplayPlannedRunDates() {
-    getRecentPlannedRunDates(displayPlannedRunDates);
+function getAndDisplayRunDates() {
+    getRunDates(displayRunDates);
 }
 
 function addPlannedRundate(plannedRunDate){
@@ -128,27 +106,27 @@ console.log('id ' + plannedRunDate.id);
 }
 
 
-function addRouteDater(runDater){
+function addRunDater(runDater){
 	console.log($('#prd' + runDater.rundateId).text());
 	$('#prd' + runDater.rundateId).append(
-      
-
-    )		
-
+         '<br>' + runDater.name	
+    );		
 }
 
 
 $(function(){
 	console.log('ready to go');
-	getAndDisplayPlannedRunDates();
+	//console.log('hoe de mock data adresseren ' + MOCK_RUNDATE_DATA.plannedRunDates[0].id);
+	getAndDisplayRunDates();
 	//displayRunDateParticipants();
     //$("#planned").on('mousemove', function(){
     //   console.log('The paragraph was moved.');
     //});  
     $('#btn1').on('click',function(){
    	  console.log('button 1 was clicked');
+      rundateId++;
    	  var plannedRunDate = {};
-      plannedRunDate.id = '1234567';
+      plannedRunDate.id = rundateId;
       plannedRunDate.date = $('#date').val();
       plannedRunDate.route = $('#route').val();
       plannedRunDate.organizer = $('#organizer').val();
@@ -172,15 +150,16 @@ $(function(){
    //
    $('#btn2').on('click',function(){
    	  console.log('button 2 was clicked');
-   	  var routeDater = {};
-   	  routeDater.id = '1234567';
-   	  routeDater.name = $('#name').val();
-   	  routeDater.remark = $('#remark').val();
-   	  routeDater.rundateId = $('#routeId').val();
+   	  participantId++;
+   	  var runDater = {};
+   	  runDater.id = participantId;
+   	  runDater.name = $('#name').val();
+   	  runDater.remark = $('#remark').val();
+   	  runDater.rundateId = $('#routeId').val();
    	  //
-      addRouteDater(routeDater);
+      addRunDater(runDater);
    	  //
-   	  $('#route').val('');
+   	  $('#routeId').val('');
    	  $('#name').val('');
       $('#remark').val('');  	  
    });	  
