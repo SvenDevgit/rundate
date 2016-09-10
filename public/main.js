@@ -1,7 +1,3 @@
-//var rundateId = 1111114;
-//var participantId = 1111113;
-
-
 /*
 function getRecentPlannedRunDates(callbackFn) {
     setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
@@ -17,81 +13,123 @@ function getRecentPlannedRunDates(callbackFn) {
        
 }
 */
-
+//var runDate;
 function getRunDates(callbackFn) {
-    //setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
-    //
-      var ajax = $.ajax('/rundates',{
+   //setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
+   //
+   var ajax = $.ajax('/rundates',{
         type: 'GET',
         dataType: 'json'
         });
         ajax.done(function(data){ callbackFn(data)
         	//console.log('show the result in the ajax call ' + data.route);
+   });
+   
+}
+
+function addRunDate (runDate, callbackFn) {
+      var runDate = runDate;
+      var ajax = $.ajax('/rundates',{
+        type: 'POST',
+        data: JSON.stringify(runDate),
+        dataType: 'json',
+        contentType: 'application/json' 
+        });
+        ajax.done(function(data){ callbackFn(data)
+        console.log('show the result in the ajax call ' + data.route);
         });
    
-   }
+}  
+
+function addParticipant (participant, callbackFn) {
+      var participant = participant;
+      var ajax = $.ajax('/participants',{
+        type: 'POST',
+        data: JSON.stringify(participant),
+        dataType: 'json',
+        contentType: 'application/json' 
+        });
+        ajax.done(function(data){ callbackFn(data)
+        console.log('show the result in the ajax call ' + data.name);
+        });
+   
+}  
 
 
-   function displayRunDates(data, callbackFn) {
-      for (let runDate of data.runDates) {
-         console.log('display function rundate ' + runDate.route);
-         $('#routes').append(
-       	 '<p id=prd' + runDate.id + '>' + runDate.route + 
-       	 '<br>' + 'id' + runDate.id +
+/*
+ShoppingList.prototype.addItem = function(name) {
+    var item = {'name': name};
+    var ajax = $.ajax('/items', {
+        type: 'POST',
+        data: JSON.stringify(item),
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    ajax.done(this.getItems.bind(this));
+};
+*/
+
+function displayRunDates(data, callbackFn) {
+   for (let runDate of data.runDates) {
+      console.log('display function rundate ' + runDate.route);
+      $('#routes').append(
+         '<p id=prd' + runDate.id + '>' + runDate.route + 
+       	 '<br>' + 'Route id ' + runDate.id +
          '<br>' + 'Date with ' + runDate.organizer + 
        	 '<br>' + 'Date ' + runDate.date + 
        	 '<br>' + 'Distance ' + runDate.distance +  
        	 '<br>' + runDate.text 
        	 //'</p>' 
-       	 ); 
+      ); 
+
+      if (runDate.participants.length > 0){
+         console.log('there are partcipants');
+         $('#routes').append(
+            'Participants'
+         ); 
+           
+         for (let participant of runDate.participants){
+            console.log('participants ' + participant.id );
+            $('#routes').append(
+               '<br>' + participant.name  +
+               '<br>' + participant.remark
+            );
+         }  
+         $('#routes').append(
+           '</p>'
+        )     
+      }
+      else {
+         $('#routes').append(
+           'No participants yet for this rundate'
+         );  
       }
    }
-/*
-// this function stays the same when we connect
-// to real API later
-function displayRunDates(data, callbackFn) {
-    for (let index in data.runDates) {
-       $('#routes').append(
-       	'<p id=prd' + data.runDates[index].id + '>' + data.plannedRunDates[index].route + 
-       	'<br>' + 'id' + data.plannedRunDates[index].id +
-        '<br>' + 'Date with ' + data.plannedRunDates[index].organizer + 
-       	'<br>' + 'Date ' + data.plannedRunDates[index].date + 
-       	'<br>' + 'Distance ' +data.plannedRunDates[index].distance +  
-       	'<br>' + data.plannedRunDates[index].text 
-       	//'</p>' 
-       	);       
-        
-        if (data.plannedRunDates[index].participants.length > 0){
-           console.log('there are partcipants');
-           $('#routes').append(
-           	 'Participants'
-           ); 
-           for (let index2 in data.plannedRunDates[index].participants){
-        	   console.log('participants ' + data.plannedRunDates[index].participants[index2].id );
-        	   $('#routes').append(
-        	      '<br>' + data.plannedRunDates[index].participants[index2].name 	
-        	   );
-           }	
-           $('#routes').append(
-           	 '</p>'
-           )  
-        }
-        else{
-           $('#routes').append(
-           	 'No participants yet for this rundate'
-           );  
-        }
-        
-    }
 }
-*/
+
+   function displayAddedRundate(data, callbackFn) {
+      console.log('display function added rundate' + data.runDate);   
+
+   }
+
+  function displayAddedParticipant(data, callbackFn) {
+      console.log('display function added rundate');   
+
+   }
+  
+
 // this function can stay the same even when we
 // are connecting to real API
 function getAndDisplayRunDates() {
     getRunDates(displayRunDates);
 }
-
-function addPlannedRundate(plannedRunDate){
+/*
+function addAndDisplayRunDate() {
+    addRunDate(displayAddedRundate);
+}
+*/
+/*
+function addRundate(runDate){
    $('#routes').append(
       '<p id=prd' + plannedRunDate.id + '>' + plannedRunDate.route + 
       '<br>' + 'Route Id ' + plannedRunDate.id +
@@ -104,14 +142,16 @@ function addPlannedRundate(plannedRunDate){
    );	
 console.log('id ' + plannedRunDate.id);
 }
+*/
 
-
+/*
 function addRunDater(runDater){
 	console.log($('#prd' + runDater.rundateId).text());
 	$('#prd' + runDater.rundateId).append(
          '<br>' + runDater.name	
     );		
 }
+*/
 
 
 $(function(){
@@ -124,17 +164,18 @@ $(function(){
     //});  
     $('#btn1').on('click',function(){
    	  console.log('button 1 was clicked');
-      rundateId++;
-   	  var plannedRunDate = {};
-      plannedRunDate.id = rundateId;
-      plannedRunDate.date = $('#date').val();
-      plannedRunDate.route = $('#route').val();
-      plannedRunDate.organizer = $('#organizer').val();
-      plannedRunDate.distance = $('#distance').val();
-      plannedRunDate.speed = $('#speed').val();
-      plannedRunDate.text = $('#text').val();
-      plannedRunDate.participants = [];
-      addPannedRundate(plannedRunDate);
+   	  var runDate = {};
+      runDate.date = $('#date').val();
+      runDate.route = $('#route').val();
+      runDate.organizer = $('#organizer').val();
+      runDate.distance = $('#distance').val();
+      runDate.speed = $('#speed').val();
+      runDate.text = $('#text').val();
+      //runDate.participants = [];
+      //addPannedRundate(plannedRunDate);
+      // hier moet de aanroep naar de post endpoint komen
+      //addRunDate(runDate, displayAddedRundate);
+      addRunDate(runDate, displayAddedRundate);
       //
       $('#date').val('');   
       $('#route').val('');
@@ -145,19 +186,18 @@ $(function(){
    	  // eerst de waarde uit het scherm in een variabele zetten
    	  //$('#itm1').val('');
    	  // add the object to the screen
-   	   addPlannedRundate(plannedRunDate);
+   	  //addPlannedRundate(plannedRunDate);
    });
    //
    $('#btn2').on('click',function(){
    	  console.log('button 2 was clicked');
-   	  participantId++;
-   	  var runDater = {};
-   	  runDater.id = participantId;
-   	  runDater.name = $('#name').val();
-   	  runDater.remark = $('#remark').val();
-   	  runDater.rundateId = $('#routeId').val();
+   	  var participant = {};
+   	  participant.name = $('#name').val();
+   	  participant.remark = $('#remark').val();
+   	  participant.rundateId = $('#routeId').val();
+      console.log('participant.rundateId  ' + participant.rundateId );
    	  //
-      addRunDater(runDater);
+      addParticipant(participant, displayAddedParticipant);
    	  //
    	  $('#routeId').val('');
    	  $('#name').val('');
