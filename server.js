@@ -126,7 +126,7 @@ app.post('/participants', jsonParser, function(request, response) {
         return response.sendStatus(400);
     }
     console.log('in de post participants endpoint');
-    var participants = runDateStorage.addParticipant(
+    var participant = runDateStorage.addParticipant(
                           request.body.name,
                           request.body.remark, 
                           request.body.rundateId

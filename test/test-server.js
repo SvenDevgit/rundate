@@ -43,7 +43,7 @@ describe('RunDate', function() {
     it('should add a participant on POST', function(done) {
         chai.request(app)
             .post('/participants')
-            .send({"name": "Stanislav Edberg", "remark": "Enjoy the run"})
+            .send({"name": "Stanislav Edberg", "remark": "Enjoy the run", "rundateId": "1"})
             .end(function(err, res) {
                 should.equal(err, null);
                 res.should.have.status(201);
