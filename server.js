@@ -43,8 +43,50 @@ var RunDateStorage = {
     //this.runDates.particpants.push(participant);
     this.partId += 1;
     return participant; 
+  },
+  deleteParticipant: function(participantId){
+     var checkIndex;
+     var index = -1;
+     for (let runDate of this.runDates){
+         checkIndex = runDate.participants.findIndex(function(participant) {return participant.id == parseInt(participantId);});
+         console.log('in de get index ' + checkIndex);
+         if (checkIndex != -1){
+            index = checkIndex;   
+            runDate.participants.splice(index,1);  
+            console.log('participant deleted');
+         } 
+     }   
+     return index;  
+  },
+  updateParticipantRemark: function(participantId, newRemark){
+     var checkIndex;
+     var index = -1;
+     for (let runDate of this.runDates){
+         checkIndex = runDate.participants.findIndex(function(participant) {return participant.id == parseInt(participantId);});
+         console.log('in de get index ' + checkIndex);
+         if (checkIndex != -1){
+            index = checkIndex;   
+            runDate.participants[index].remark = newRemark;  
+            console.log('participant updated');
+         } 
+     }   
+     return index;  
   }
+
 };
+
+/*
+Storage.prototype.getItemIndex = function(id){
+   var index;
+   index = this.items.findIndex(function(item) { return item.id === parseInt(id); };    
+   console.log(' index in de prototype ' + index);
+   return index;
+};
+*/
+
+
+
+
 
 
 var createRunDateStorage = function() {
@@ -87,6 +129,11 @@ runDateStorage.add('07-10-2016',
 runDateStorage.addParticipant('Kelly','short remark', 1);
 runDateStorage.addParticipant('Peter','looking forward tp the run', 1);
 runDateStorage.addParticipant('Joey','also a short remark', 2);
+
+//var index = runDateStorage.deleteParticipant(1);
+//var index = runDateStorage.deleteParticipant(2);
+//console.log('index ' + index);
+var index = runDateStorage.updateParticipantRemark(2,'updated and imprived remark');
 
 
 // implement the endpoints
@@ -133,6 +180,40 @@ app.post('/participants', jsonParser, function(request, response) {
                         );
     response.status(201).json(participant);
 
+});
+
+app.put('/participants/:id', jsonParser, function(request, result){
+    console.log('in the put');
+    console.log(' body name ' + request.body.remark);
+    if (!request.body) {
+        return result.sendStatus(400);
+    } 
+    var id = request.params.id;
+    var index = runDateStorage.updateParticipantRemark(id, request.body.remark);
+    if (index == -1){
+       result.status(404).send('This item does not exist index' + index);
+    }
+    else {
+      var updated = index;
+      result.status(200).json(updated);
+    }  
+});
+
+
+app.delete('/participants/:id', jsonParser, function(request, result){
+  console.log('in the delete');
+    if (!request.body) {
+        return result.sendStatus(400);
+    } 
+    var id = request.params.id;
+    var index = runDateStorage.deleteParticipant(id);
+    if (index == -1){
+       result.status(404).send('This item does not exist index' + index);
+    }
+    else {
+      var removed = index;
+      result.status(200).json(removed);
+    }  
 });
 
 app.listen(process.env.PORT || 8080);

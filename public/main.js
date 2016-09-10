@@ -92,7 +92,8 @@ function displayRunDates(data, callbackFn) {
             console.log('participants ' + participant.id );
             $('#routes').append(
                '<br>' + participant.name  +
-               '<br>' + participant.remark
+               '<br>' + participant.remark +
+               '<br>' + participant.id
             );
          }  
          $('#routes').append(

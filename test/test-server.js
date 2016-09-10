@@ -51,4 +51,25 @@ describe('RunDate', function() {
             });
     });   
 
-});
+    it('should edit an item on PUT', function(done){
+       chai.request(app)
+           .put('/participants/1')
+           .send({'remark':'This is a much better remark'})
+           .end(function(err, res){
+               should.equal(err, null);
+               res.should.have.status(200);
+               done();    
+           });
+     });      
+    
+    it('should delete an item on DELETE', function(done){
+       chai.request(app)
+          .delete('/participants/3')
+          .end(function(err, res){
+             should.equal(err, null);
+             res.should.have.status(200);
+             done();
+          });	
+
+     });
+});    
