@@ -5,7 +5,7 @@
 	<title>RunDate</title>
 </head>
 <body> 
-  <p id="planned">Planned Routes</p>
+  <p id="planned">RunDate</p>
   <div id=form>
     <p>Add a rundate</p>	
       <form>
@@ -21,8 +21,8 @@
         <input id="speed" type="text"><br>
         <label for="text">Text</label>
         <input id="text" type="text"><br>
-        <label for="btn1">Add Route</label>
-        <input id="btn1" type="button">
+        <label for="btnAddRun">Add Route</label>
+        <input id="btnAddRun" type="button">
       </form>
       <p>Add a participant</p>
       <form>
@@ -31,14 +31,30 @@
         <label for="name">Name</label>
         <input id="name" type="text"><br>  
         <label for="remark">Remark</label>
-
         <input id="remark" type="text"><br> 
-        <label for="btn2">Add Route</label>
-        <input id="btn2" type="button">
+        <label for="btnAddPar">Add Route</label>
+        <input id="btnAddPar" type="button">
       </form>  
+      <p>Cancel Rundate Participation</p>
+      <form>
+        <label for="partIdDel">Participant Id</label>
+        <input id="partIdDel" type="text"><br>  
+        <label for="btnDelPar">Cancel</label>
+        <input id="btnDelPar" type="button">
+      </form>
+      <p>Renew Remark</p>
+      <form>
+        <label for="partIdPut">Participant Id</label>
+        <input id="partIdPut" type="text"><br>  
+        <label for="remarkPut">New Remark</label>
+        <input id="remarkPut" type="text"><br> 
+        <label for="btnPutPar">Renew</label>
+        <input id="btnPutPar" type="button">
+      </form>
+      </form>
   </div>
+  <p>Check out these running routes join them!</p>
   <div id=routes>
-  	<p>below here the routes should be shown</p>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

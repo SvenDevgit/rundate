@@ -1,19 +1,4 @@
-/*
-function getRecentPlannedRunDates(callbackFn) {
-    setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
-    //
-    
-    var ajax = $.ajax('/rundates', callbackFn() {
-        type: 'GET',
-        dataType: 'json'
-        });
-        ajax.done(function(result){ callbackFn(result)
-        	console.log('show the result in the ajax call ' + result);
-        });
-       
-}
-*/
-//var runDate;
+//
 function getRunDates(callbackFn) {
    //setTimeout(function(){ callbackFn(MOCK_RUNDATE_DATA)}, 100);
    //
@@ -36,7 +21,7 @@ function addRunDate (runDate, callbackFn) {
         contentType: 'application/json' 
         });
         ajax.done(function(data){ callbackFn(data)
-        console.log('show the result in the ajax call ' + data.route);
+           console.log('show the result in the ajax call ' + data.route);
         });
    
 }  
@@ -50,24 +35,34 @@ function addParticipant (participant, callbackFn) {
         contentType: 'application/json' 
         });
         ajax.done(function(data){ callbackFn(data)
-        console.log('show the result in the ajax call ' + data.name);
+           console.log('show the result in the ajax call ' + data.name);
         });
    
 }  
 
-
-/*
-ShoppingList.prototype.addItem = function(name) {
-    var item = {'name': name};
-    var ajax = $.ajax('/items', {
-        type: 'POST',
-        data: JSON.stringify(item),
+function updateParticipant (participantId, participant, callbackFn) {
+      var ajax = $.ajax('/participants/' + participantId,{
+        type: 'PUT',
+        data: JSON.stringify(participant),
         dataType: 'json',
-        contentType: 'application/json'
-    });
-    ajax.done(this.getItems.bind(this));
-};
-*/
+        contentType: 'application/json' 
+        });
+        ajax.done(function(data){ callbackFn(data)
+           console.log('show the result in the ajax call ' + data);
+        });
+}  
+
+
+function deleteParticipant (participantId, callbackFn) {
+      var ajax = $.ajax('/participants/' + participantId,{
+        type: 'DELETE',
+        dataType: 'json',
+        });
+        ajax.done(function(data){ callbackFn(data)
+        console.log('show the result in the ajax call ' + data);
+        });
+   
+}  
 
 function displayRunDates(data, callbackFn) {
    for (let runDate of data.runDates) {
@@ -79,7 +74,6 @@ function displayRunDates(data, callbackFn) {
        	 '<br>' + 'Date ' + runDate.date + 
        	 '<br>' + 'Distance ' + runDate.distance +  
        	 '<br>' + runDate.text 
-       	 //'</p>' 
       ); 
 
       if (runDate.participants.length > 0){
@@ -91,9 +85,9 @@ function displayRunDates(data, callbackFn) {
          for (let participant of runDate.participants){
             console.log('participants ' + participant.id );
             $('#routes').append(
-               '<br>' + participant.name  +
-               '<br>' + participant.remark +
-               '<br>' + participant.id
+               '<br>' + 'Participant Id ' + participant.id +
+               '<br>' + 'Name '  + participant.name  +
+               '<br>' + 'Remark ' + participant.remark
             );
          }  
          $('#routes').append(
@@ -102,69 +96,45 @@ function displayRunDates(data, callbackFn) {
       }
       else {
          $('#routes').append(
-           'No participants yet for this rundate'
+           'You can be the first to join this route'
          );  
       }
    }
 }
 
-   function displayAddedRundate(data, callbackFn) {
-      console.log('display function added rundate' + data.runDate);   
+function displayAddedRundate(data, callbackFn) {
+   console.log('display function added rundate' + data.runDate);   
+}
 
-   }
+function displayAddedParticipant(data, callbackFn) {
+   console.log('display function added participant');   
+}
+  
+function displayDeletedParticipant(data, callbackFn) {
+   console.log('display function deleted participant');   
+}
 
-  function displayAddedParticipant(data, callbackFn) {
-      console.log('display function added rundate');   
-
-   }
+function displayUpdtedParticipant(data, callbackFn) {
+   console.log('display function updated participant');   
+}
   
 
-// this function can stay the same even when we
-// are connecting to real API
 function getAndDisplayRunDates() {
     getRunDates(displayRunDates);
 }
-/*
-function addAndDisplayRunDate() {
-    addRunDate(displayAddedRundate);
-}
-*/
-/*
-function addRundate(runDate){
-   $('#routes').append(
-      '<p id=prd' + plannedRunDate.id + '>' + plannedRunDate.route + 
-      '<br>' + 'Route Id ' + plannedRunDate.id +
-      '<br>' + 'Date with ' + plannedRunDate.organizer + 
-      '<br>' + 'Date ' + plannedRunDate.date + 
-      '<br>' + 'Distance ' + plannedRunDate.distance +  
-      '<br>' + plannedRunDate.text +   
-      '</pr>' +
-      '<p> No participants yet for this route </p>'  
-   );	
-console.log('id ' + plannedRunDate.id);
-}
-*/
 
-/*
-function addRunDater(runDater){
-	console.log($('#prd' + runDater.rundateId).text());
-	$('#prd' + runDater.rundateId).append(
-         '<br>' + runDater.name	
-    );		
+function clearGetAndDisplayRunDates() {
+    $("#routes").html(" "); 
+    getRunDates(displayRunDates);
 }
-*/
 
 
 $(function(){
-	console.log('ready to go');
-	//console.log('hoe de mock data adresseren ' + MOCK_RUNDATE_DATA.plannedRunDates[0].id);
-	getAndDisplayRunDates();
-	//displayRunDateParticipants();
-    //$("#planned").on('mousemove', function(){
-    //   console.log('The paragraph was moved.');
-    //});  
-    $('#btn1').on('click',function(){
-   	  console.log('button 1 was clicked');
+	 console.log('ready to go');
+	 getAndDisplayRunDates();
+  
+   $('#btnAddRun').on('click',function(){
+   	  console.log('button AddRun was clicked');
    	  var runDate = {};
       runDate.date = $('#date').val();
       runDate.route = $('#route').val();
@@ -172,40 +142,58 @@ $(function(){
       runDate.distance = $('#distance').val();
       runDate.speed = $('#speed').val();
       runDate.text = $('#text').val();
-      //runDate.participants = [];
-      //addPannedRundate(plannedRunDate);
-      // hier moet de aanroep naar de post endpoint komen
-      //addRunDate(runDate, displayAddedRundate);
+
       addRunDate(runDate, displayAddedRundate);
-      //
+      clearGetAndDisplayRunDates();
+
       $('#date').val('');   
       $('#route').val('');
       $('#organizer').val('');
       $('#distance').val('');
       $('#speed').val('');
       $('#text').val(''); 
-   	  // eerst de waarde uit het scherm in een variabele zetten
-   	  //$('#itm1').val('');
-   	  // add the object to the screen
-   	  //addPlannedRundate(plannedRunDate);
    });
-   //
-   $('#btn2').on('click',function(){
-   	  console.log('button 2 was clicked');
+
+   $('#btnAddPar').on('click',function(){
+   	  console.log('button AddPar was clicked');
    	  var participant = {};
    	  participant.name = $('#name').val();
    	  participant.remark = $('#remark').val();
    	  participant.rundateId = $('#routeId').val();
-      console.log('participant.rundateId  ' + participant.rundateId );
-   	  //
+
       addParticipant(participant, displayAddedParticipant);
-   	  //
+      clearGetAndDisplayRunDates();
+
    	  $('#routeId').val('');
    	  $('#name').val('');
       $('#remark').val('');  	  
    });	  
 
+   $('#btnDelPar').on('click',function(){
+      console.log('button DelPar was clicked');
+      var participantId = $('#partIdDel').val();
+      //console.log('participantId  ' + participantId );
+ 
+      deleteParticipant (participantId, displayDeletedParticipant);
+      clearGetAndDisplayRunDates();
 
+      $('#partIdDel').val('');   
+   });   
+
+   $('#btnPutPar').on('click',function(){
+      console.log('button PutPar was clicked');
+      var participantId = $('#partIdPut').val();
+      var participant = {};
+      participant.remark = $('#remarkPut').val();
+      //console.log('participant new remark  ' + participant.remark);
+      //console.log('participantId  ' + participantId );
+
+      updateParticipant (participantId, participant, displayUpdtedParticipant);
+
+      clearGetAndDisplayRunDates();
+      $('#partIdPut').val('');   
+      $('#remarkPut').val(''); 
+   });    
 });
 
 
