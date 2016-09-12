@@ -105,9 +105,9 @@ runDateStorage.add('07-10-2016',
                    'Moorland, dunes and forrest. Scenic route, more advanced tempo');
 
 
-runDateStorage.addParticipant('Kelly','short remark', 1);
-runDateStorage.addParticipant('Peter','looking forward tp the run', 1);
-runDateStorage.addParticipant('Joey','also a short remark', 2);
+runDateStorage.addParticipant('Kelly','Lookong forward to running on the bach', 1);
+runDateStorage.addParticipant('Peter','Good route to try out my new shoes', 1);
+runDateStorage.addParticipant('Joey','Just started running, good to see there ar runs for me', 2);
 
 //var index = runDateStorage.updateParticipantRemark(2,'updated and improved remark');
 
