@@ -73,6 +73,7 @@ function displayRunDates(data, callbackFn) {
          '<br>' + 'Date with ' + runDate.organizer + 
        	 '<br>' + 'Date ' + runDate.date + 
        	 '<br>' + 'Distance ' + runDate.distance +  
+         '<br>' + 'Speed ' + runDate.speed +         
        	 '<br>' + runDate.text 
       ); 
 
