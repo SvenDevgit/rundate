@@ -66,7 +66,7 @@ function deleteParticipant (participantId, callbackFn) {
 
 function displayRunDates(data, callbackFn) {
    for (let runDate of data.runDates) {
-      console.log('display function rundate ' + runDate.route);
+      //console.log('display function rundate ' + runDate.route);
       $('#routes').append(
          '<p id=prd' + runDate.id + '>' + runDate.route + 
        	 '<br>' + 'Route id ' + runDate.id +
@@ -77,13 +77,13 @@ function displayRunDates(data, callbackFn) {
       ); 
 
       if (runDate.participants.length > 0){
-         console.log('there are partcipants');
+         //console.log('there are partcipants');
          $('#routes').append(
             'Participants'
          ); 
            
          for (let participant of runDate.participants){
-            console.log('participants ' + participant.id );
+            //console.log('participants ' + participant.id );
             $('#routes').append(
                '<br>' + 'Participant Id ' + participant.id +
                '<br>' + 'Name '  + participant.name  +
